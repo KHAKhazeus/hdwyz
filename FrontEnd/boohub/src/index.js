@@ -8,8 +8,8 @@ import * as serviceWorker from './serviceWorker';
 import { Button } from 'antd-mobile';
 import 'antd-mobile/dist/antd-mobile.css'
 
-// ReactDOM.render(<App />, document.getElementById('root'));
-ReactDOM.render(<Button>Start</Button>, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));
+// ReactDOM.render(<Button>Start</Button>, document.getElementById('root'));
 
 
 // If you want your app to work offline and load faster, you can change
