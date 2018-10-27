@@ -43,7 +43,7 @@ class View extends Component{
             <NavBar icon={<Icon type="ellipsis"/>} onLeftClick={this.onOpenChange}>查看评论</NavBar>
             {/*TODO: backend exchange*/}
             <SearchBarWrapper submit={(value)=>{alert(value)}} style={{zindex: 1}}/>
-            <Demo/>
+            <Demo history={this.props.history}/>
             </div>);
     }
 }

@@ -8,7 +8,8 @@ const myContract = new nervos.appchain.Contract(abi)
   transaction.validUntilBlock = current + 88
   const txRes = await myContract
     .deploy({ data: bytecode, arguments: [] })
-    .send(transaction)
+    .send(transaction).catch(console.log)
+    console.log(txRes)
   const res = await nervos.listeners.listenToTransactionReceipt(txRes.hash)
   const { contractAddress } = res
   console.log('contractAddress', contractAddress)

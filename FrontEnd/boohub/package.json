@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
+    "@nervos/chain": "^0.17.40",
+    "@nervos/web3": "^0.17.40",
     "antd-mobile": "^2.2.6",
     "history": "latest",
     "rc-form": "^2.2.6",
@@ -11,9 +13,7 @@
     "react-dom": "^16.6.0",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "2.0.5",
-    "@nervos/web3": "^0.17.40",
-    "@nervos/chain": "^0.17.40"
+    "react-scripts": "2.0.5"
   },
   "scripts": {
     "start": "react-scripts start",

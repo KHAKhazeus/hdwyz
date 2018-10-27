@@ -1,6 +1,6 @@
 const config = {
-  chain: 'http://121.196.200.225:1337',
+  chain: 'http://118.25.173.28:1337',
   privateKey:
-    '0x5d3c73fa94c85bbcb516cb256a4e82c414255a270b5d065179a94aa0d5dc3efe'
+    '0x8c6aa55299c2eec79bc59a1811c00970c3abad8356b435f85be0184017793668'
 }
 module.exports = config

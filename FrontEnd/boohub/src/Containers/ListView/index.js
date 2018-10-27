@@ -6,6 +6,7 @@ import * as ReactDOM from "react-dom";
 import { List } from 'antd-mobile';
 import nervos from "../../nervos";
 import {simpleStoreContract, transaction} from "../../simpleStore";
+// import {hashHistory} from 'react-router'
 
 const Item = List.Item;
 const Brief = Item.Brief;
@@ -74,7 +75,13 @@ class Demo extends React.Component {
                 <List>
                     {this.data.map((e)=><Item arrow="horizontal"
                                               multipleLine
-                                              onClick={() => {}}
+                                              onClick={() => {this.props.history.push({
+                                                  pathname: '/comment',
+                                                  query: {
+                                                      context: e['contents']
+                                                  }
+                                              }
+                                              )}}
                                               platform="android">{e['title']}
                                               <Brief>
                                                   {e['contents']}
