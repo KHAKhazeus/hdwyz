@@ -66,14 +66,20 @@ class Demo extends React.Component {
     render() {
         if(this.state.loading === true){
             return(
-                <List>
-                    <Item>aaaa</Item>
-                </List>
+                <List></List>
             );
         }
         else{
             return(
-                this.data.map((e)=><Item>{e['title']}</Item>)
+                <List>
+                    {this.data.map((e)=><Item arrow="horizontal"
+                                              multipleLine
+                                              onClick={() => {}}
+                                              platform="android">{e['title']}
+                                              <Brief>
+                                                  {e['contents']}
+                                              </Brief></Item>)}
+                </List>
             );
         }
     }
