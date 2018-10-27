@@ -17,7 +17,7 @@ class View extends Component{
     };
     render() {
         // fix in codepen
-        const sidebar = (<List>
+        const sidebar = (<List style={{zindex: 3}}>
             {category.map((i, index) => {
 
                 return (
@@ -42,7 +42,7 @@ class View extends Component{
             </Drawer>
             <NavBar icon={<Icon type="ellipsis"/>} onLeftClick={this.onOpenChange}>查看评论</NavBar>
             {/*TODO: backend exchange*/}
-            <SearchBarWrapper submit={(value)=>{alert(value)}}/>
+            <SearchBarWrapper submit={(value)=>{alert(value)}} style={{zindex: 1}}/>
             <Demo/>
             </div>);
     }
