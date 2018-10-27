@@ -1,1 +1,1 @@
-pragma 
+pragma ^0.5.0.0
