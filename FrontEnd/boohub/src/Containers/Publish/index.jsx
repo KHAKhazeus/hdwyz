@@ -21,7 +21,7 @@ class Publish extends Component{
                         <List renderHeader={() => ''}>
 
                             <TextareaItem
-                                {...getFieldProps('note3')}
+                                {...getFieldProps('note1')}
                                 title="地址"
                                 autoHeight
                                 labelNumber={2}
@@ -30,7 +30,7 @@ class Publish extends Component{
                             <img id='map' src={testMap} alt="map"/>
                             </div>
                             <TextareaItem
-                                {...getFieldProps('note1')}
+                                {...getFieldProps('note2')}
                                 rows={1}
                                 placeholder="请输入地址"
                             />
@@ -44,7 +44,7 @@ class Publish extends Component{
                                 labelNumber={2}
                             />
                             <TextareaItem
-                                {...getFieldProps('note1')}
+                                {...getFieldProps('note4')}
                                 rows={1}
                                 placeholder="请输入标题"
                             />
@@ -52,13 +52,13 @@ class Publish extends Component{
 
                         <List renderHeader={() => ''}>
                             <TextareaItem
-                                {...getFieldProps('note3')}
+                                {...getFieldProps('note5')}
                                 title="评论内容"
                                 autoHeight
                                 labelNumber={2}
                             />
                             <TextareaItem
-                                {...getFieldProps('note1')}
+                                {...getFieldProps('note6')}
                                 rows={5}
                                 placeholder="请输入评论内容"
                             />
