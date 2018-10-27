@@ -5,7 +5,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
  
 // test
-import { Button } from 'antd-mobile';
+//import { Button } from 'antd-mobile';
 import 'antd-mobile/dist/antd-mobile.css'
 
 ReactDOM.render(<App />, document.getElementById('root'));
