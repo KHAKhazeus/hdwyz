@@ -7,12 +7,21 @@ import { createForm } from 'rc-form';
 import category from '../../Data/Category'
 import UpNav from '../../Components/UpNav/UpNav';
 import testMap from '../../Map.png'
-import './publish.css'
+import './follow.css'
 import nervos from '../../nervos'
 import { transaction, simpleStoreContract } from '../../simpleStore'
 
 
-class Publish extends Component{
+class Follow extends Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            pictureOnClick: false,
+            text: ''
+        };
+    }
+
+
     // state = {
     //     title: '',
     //     contents: '',
@@ -51,12 +60,15 @@ class Publish extends Component{
         // alert(title + contents + new Date() + category + province + district + street);
 
         const { getFieldProps } = this.props.form;
-        const title = getFieldProps('note4')['value'];
-        const contents = getFieldProps('note6')['value'];
-        const category = "吃";
-        const province = '上海';
-        const district = '杨浦';
-        const street = '四平路';
+        let data = this.props.location.query;
+        const title = data['title'];
+        const previouscontents = data['contents']
+        let contents = getFieldProps('note7')["value"];
+        contents = contents + "//:" + previouscontents;
+        const category = data['category'];
+        const province = data['address'][0];
+        const district = data['address'][1];
+        const street = data['address'][2];
         const time = new Date();
         nervos.appchain
             .getBlockNumber()
@@ -93,6 +105,12 @@ class Publish extends Component{
     render(){
         // const {title, contents, category, province, district, street, time} = this.state;
         const { getFieldProps } = this.props.form;
+        let data = this.props.location.query;
+        let title = data['title'];
+        let contents = data['contents'];
+        let province= data['address'][0];
+        let district= data['address'][1];
+        let street= data['address'][2];
         return(
             <Route>
                 <div>
@@ -102,18 +120,17 @@ class Publish extends Component{
 
                             <TextareaItem
                                 {...getFieldProps('note1')}
+                                editable={false}
                                 title="地址"
                                 autoHeight
                                 labelNumber={2}
                             />
-                            <div id='mapImage'>
-                                <img id='map' src={testMap} alt="map"/>
-                            </div>
                             <TextareaItem
                                 // id = "address"
                                 {...getFieldProps('note2')}
                                 rows={1}
-                                placeholder="请输入地址"
+                                value={province + district + street}
+                                editable={false}
                                 // value = {time}
                                 // onChange={this.handleInput}
                             />
@@ -122,6 +139,7 @@ class Publish extends Component{
                         <List renderHeader={() => ''}>
                             <TextareaItem
                                 {...getFieldProps('note3')}
+                                editable={false}
                                 title="标题"
                                 autoHeight
                                 labelNumber={2}
@@ -130,6 +148,9 @@ class Publish extends Component{
                                 {...getFieldProps('note4')}
                                 rows={1}
                                 placeholder="请输入标题"
+                                editable={false}
+                                value={title}
+
                                 // id = "title"
                                 // value = {title}
                                 // onChange={this.handleInput}
@@ -139,18 +160,28 @@ class Publish extends Component{
                         <List renderHeader={() => ''}>
                             <TextareaItem
                                 {...getFieldProps('note5')}
+                                editable={false}
                                 title="评论内容"
                                 autoHeight
                                 labelNumber={2}
                             />
                             <TextareaItem
                                 {...getFieldProps('note6')}
-                                // id = 'contents'
-                                rows={5}
-                                // value = {contents}
-                                // onChange={this.handleInput}
-                                placeholder="请输入评论内容"
+                                editable={false}
+                                autoHeight
+                                value = {contents}
                             />
+                        </List>
+                        <List renderHeader={() => ''}>
+                        <TextareaItem
+                            {...getFieldProps('note7')}
+                            // id = 'contents'
+                            rows={5}
+                            editable={true}
+                            // value = {contents}
+                            // onChange={this.handleInput}
+                            placeholder="请输入评论内容"
+                        />
                         </List>
 
                         <WingBlank size="lg">
@@ -164,6 +195,6 @@ class Publish extends Component{
     }
 }
 
-const PublishItemWrapper = createForm()(Publish);
+const FollowItemWrapper = createForm()(Follow);
 
-export default PublishItemWrapper
+export default FollowItemWrapper

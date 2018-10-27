@@ -1,5 +1,5 @@
 
-import {Drawer, Icon, ListView, NavBar, PullToRefresh} from 'antd-mobile';
+import {Drawer, Icon, ListView, NavBar} from 'antd-mobile';
 import React from 'react'
 import * as ReactDOM from "react-dom";
 
@@ -13,8 +13,15 @@ import {category, dict} from "../../Data/Category";
 const Item = List.Item;
 const Brief = Item.Brief;
 
-class Demo extends React.Component {
+class World extends React.Component {
 
+    // constructor(props){
+    //     super(props);
+    //     this.state = {
+    //         refresh: true
+    //     };
+    //     this.getData();
+    // }
     constructor(props){
         super(props)
         const data = this.props.query;
@@ -33,14 +40,6 @@ class Demo extends React.Component {
         this.setState({ open: !this.state.open });
     };
 
-    // constructor(props){
-    //     super(props);
-    //     this.state = {
-    //         refresh: true
-    //     };
-    //     this.getData();
-    // }
-
 
     componentDidMount(){
         this.getData();
@@ -52,21 +51,25 @@ class Demo extends React.Component {
     getData(){
         const from = window.neuron.getAccount();
         simpleStoreContract.methods
-            .getUserContentsForThisUser()
+            .getWorldWideLength()
             .call({
                 from,
             })
-            .then(times => {
+            .then(length => {
+                var indexes = [];
+                var i;
+                for(i = length - 1; i >=0; i--){
+                    indexes.push(i);
+                }
                 // alert(JSON.stringify(times, null, 2))
-                times.reverse()
                 console.log('list account' + window.neuron.getAccount())
-                return Promise.all(times.map(time => simpleStoreContract.methods.getACommentOfMine(time).call({ from })))
+                return Promise.all(indexes.map(index => simpleStoreContract.methods.getWorldWideOneByOne(index).call({ from })))
             })
             .then((pack) => {
                 this.data = pack;
                 // alert(JSON.stringify(this.data, null, 2))
                 this.forceUpdate();
-                 // alert(this.data[0]['title']);
+                // alert(this.data[0]['title']);
             })
             .catch(err => {
                 // this.setState({ loading: false })
@@ -82,6 +85,7 @@ class Demo extends React.Component {
     // }
 
     render() {
+
         const sidebar = (<List style={{zindex: 3}}>
             {category.map((i, index) => {
 
@@ -99,84 +103,49 @@ class Demo extends React.Component {
 
             })
             }
-        </List>)
+        </List>);
         if(this.state.loading === true){
             return(
-                <PullToRefresh
-                    damping={60}
-                    ref={el => this.ptr = el}
-                    style={{
-                        height: this.state.height,
-                        overflow: 'auto',
-                    }}
-                    indicator={this.state.down ? {} : { deactivate: '上拉可以刷新' }}
-                    direction={this.state.down ? 'down' : 'up'}
-                    refreshing={this.state.refreshing}
-                    onRefresh={() => {
-                        this.setState({ refreshing: true });
-                        setTimeout(() => {
-                            this.setState({ refreshing: false });
-                        }, 1000);
-                    }}
-                >
                 <List></List>
-                </PullToRefresh>
             );
         }
         else{
             return(
                 <div>
-
-                    <PullToRefresh
-                        damping={30}
-                        ref={el => this.ptr = el}
-                        style={{
-                            height: this.state.height,
-                            overflow: 'auto',
-                        }}
-                        indicator={this.state.down ? {} : { deactivate: '上拉可以刷新' }}
-                        direction={'down'}
-                        refreshing={this.state.refreshing}
-                        onRefresh={() => {
-                            this.getData()
-                        }}
-                    >
-
-                    <Drawer
-                        className="category-drawer"
-                        style={{ minHeight: document.documentElement.clientHeight }}
-                        contentStyle={{ color: '#A6A6A6', textAlign: 'center', paddingTop: 42 }}
-                        sidebar={sidebar}
-                        open={this.state.open}
-                        onOpenChange={this.onOpenChange}
-                    >
-                    </Drawer>
-                    <NavBar icon={<Icon type="ellipsis"/>} onLeftClick={this.onOpenChange}>查看评论</NavBar>
-                    {/*TODO: backend exchange*/}
-                    <SearchBarWrapper submit={(value)=>{alert(value)}} style={{zindex: 1}}/>
+                <Drawer
+                    className="category-drawer"
+                    style={{ minHeight: document.documentElement.clientHeight }}
+                    contentStyle={{ color: '#A6A6A6', textAlign: 'center', paddingTop: 42 }}
+                    sidebar={sidebar}
+                    open={this.state.open}
+                    onOpenChange={this.onOpenChange}
+                >
+                </Drawer>
+                <NavBar icon={<Icon type="ellipsis"/>} onLeftClick={this.onOpenChange}>查看评论</NavBar>
+            {/*TODO: backend exchange*/}
+            <SearchBarWrapper submit={(value)=>{alert(value)}} style={{zindex: 1}}/>
                 <List>
                     {this.data.map((e)=><Item arrow="horizontal"
                                               multipleLine
                                               onClick={() => {this.props.history.push({
-                                                  pathname: '/follow',
-                                                  query: {
-                                                      title: e['title'],
-                                                      contents: e['contents'],
-                                                      address: [
-                                                          e['province'],
-                                                          e['district'],
-                                                          e['street'] ],
-                                                      category: e['category']
+                                                      pathname: '/follow',
+                                                      query: {
+                                                          title: e['title'],
+                                                          contents: e['contents'],
+                                                          address: [
+                                                              e['province'],
+                                                              e['district'],
+                                                              e['street'] ],
+                                                          category: e['category']
 
+                                                      }
                                                   }
-                                              }
                                               )}}
                                               platform="android">{e['title']}
-                                              <Brief>
-                                                  {e['contents']}
-                                              </Brief></Item>)}
+                        <Brief>
+                            {e['contents']}
+                        </Brief></Item>)}
                 </List>
-                </PullToRefresh>
                 </div>
             );
         }
@@ -410,4 +379,4 @@ class Demo extends React.Component {
 //     }
 // }
 
-export default Demo;
+export default World;

@@ -17,6 +17,8 @@ contract BooComment {
         string street;
     }
 
+    Comment[] worldwide;
+
     mapping (address => mapping (uint256 => Comment)) private records;
     mapping (address => uint256[]) private usercontents;
 
@@ -57,23 +59,29 @@ contract BooComment {
     //TODO:addACommentFromMe
 
     function addACommentFromMe(string title, string contents, string category, string province, string district, string street, uint256 time) public {
-        records[msg.sender][time] = Comment({
-            client: msg.sender,
-            time: time,
-            title: title,
-            contents: contents,
-            category: category,
-            shop: Shop({
-                province: province,
-                district: district,
-                street: street
-            })
-        });
+        Comment new_comment = Comment({
+                                          client: msg.sender,
+                                          time: time,
+                                          title: title,
+                                          contents: contents,
+                                          category: category,
+                                          shop: Shop({
+                                              province: province,
+                                              district: district,
+                                              street: street
+                                          })
+                                      });
+        records[msg.sender][time] = new_comment;
+        worldwide.push(new_comment);
         _addAUserContentRecord(msg.sender, time);
         emit Recorded(msg.sender, title, contents, category, province, district, street, time);
     }
 
     //TODO:getACommentOfMine
+
+    function getWorldWide() public view returns(Comments[]){
+        return worldwide;
+    }
 
     function getACommentOfMine(uint256 time) public view returns(string title, string contents, string category, string province, string district, string street) {
         Comment storage com = records[msg.sender][time];
