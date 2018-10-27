@@ -142,29 +142,29 @@ class Demo extends React.Component {
                 circle--;
                 return (
                     <div>
-                    <div key={rowID} style={{ padding: '0 15px' }}>
-                        <div
-                            style={{
-                                lineHeight: '50px',
-                                color: '#888',
-                                fontSize: 18,
-                                borderBottom: '1px solid #F6F6F6',
-                            }}
-                        >{obj.title}</div>
-                        <div style={{ display: '-webkit-box', display: 'flex', padding: '15px 0' }}>
-                            <img style={{ height: '64px', marginRight: '15px' }} src={obj.img} alt="" />
-                            <div style={{ lineHeight: 1 }}>
-                                <div style={{ marginBottom: '8px', fontWeight: 'bold' }}>{obj.des}</div>
-                                <div><span style={{ fontSize: '30px', color: '#FF6E27' }}>35</span>¥ {rowID}</div>
+                        <div key={rowID} style={{ padding: '0 15px' }}>
+                            <div
+                                style={{
+                                    lineHeight: '50px',
+                                    color: '#888',
+                                    fontSize: 18,
+                                    borderBottom: '1px solid #F6F6F6',
+                                }}
+                            >{obj.title}</div>
+                            <div style={{ display: '-webkit-box', display: 'flex', padding: '15px 0' }}>
+                                <img style={{ height: '64px', marginRight: '15px' }} src={obj.img} alt="" />
+                                <div style={{ lineHeight: 1 }}>
+                                    <div style={{ marginBottom: '8px', fontWeight: 'bold' }}>{obj.des}</div>
+                                    <div><span style={{ fontSize: '30px', color: '#FF6E27' }}>35</span>¥ {rowID}</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
                         <div
                             style={{
                                 backgroundColor: '#F5F5F9',
                                 height: 8,
                                 borderTop: '1px solid #ECECED',
-                                borderBottom: '1px solid #ECECED',  Z 
+                                borderBottom: '1px solid #ECECED'
                             }}
                         />
                     </div>
