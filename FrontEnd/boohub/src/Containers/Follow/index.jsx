@@ -176,7 +176,7 @@ class Follow extends Component{
                         <TextareaItem
                             {...getFieldProps('note7')}
                             // id = 'contents'
-                            rows={5}
+                            autoHeight
                             editable={true}
                             // value = {contents}
                             // onChange={this.handleInput}

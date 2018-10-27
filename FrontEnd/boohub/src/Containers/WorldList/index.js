@@ -1,5 +1,5 @@
 
-import {Drawer, Icon, ListView, NavBar} from 'antd-mobile';
+import {Drawer, Icon, ListView, NavBar, PullToRefresh} from 'antd-mobile';
 import React from 'react'
 import * as ReactDOM from "react-dom";
 
@@ -112,6 +112,23 @@ class World extends React.Component {
         else{
             return(
                 <div>
+                    <PullToRefresh
+                        damping={60}
+                        ref={el => this.ptr = el}
+                        style={{
+                            height: this.state.height,
+                            overflow: 'auto',
+                        }}
+                        indicator={this.state.down ? {} : { deactivate: '上拉可以刷新' }}
+                        direction={this.state.down ? 'down' : 'up'}
+                        refreshing={this.state.refreshing}
+                        onRefresh={() => {
+                            this.setState({ refreshing: true });
+                            setTimeout(() => {
+                                this.setState({ refreshing: false });
+                            }, 1000);
+                        }}
+                    >
                 <Drawer
                     className="category-drawer"
                     style={{ minHeight: document.documentElement.clientHeight }}
@@ -121,7 +138,7 @@ class World extends React.Component {
                     onOpenChange={this.onOpenChange}
                 >
                 </Drawer>
-                <NavBar icon={<Icon type="ellipsis"/>} onLeftClick={this.onOpenChange}>查看评论</NavBar>
+                <NavBar icon={<Icon type="ellipsis"/>} onLeftClick={this.onOpenChange}>查看世界</NavBar>
             {/*TODO: backend exchange*/}
             <SearchBarWrapper submit={(value)=>{alert(value)}} style={{zindex: 1}}/>
                 <List>
@@ -146,6 +163,7 @@ class World extends React.Component {
                             {e['contents']}
                         </Brief></Item>)}
                 </List>
+                    </PullToRefresh>
                 </div>
             );
         }

@@ -13,7 +13,7 @@ class WorldView extends Component{
         // fix in codepen
 
         return (<div>
-            <World history={this.props.history} query={this.props.query}/>
+            <World history={this.props.history} query={this.props.location.query}/>
         </div>);
     }
 }
