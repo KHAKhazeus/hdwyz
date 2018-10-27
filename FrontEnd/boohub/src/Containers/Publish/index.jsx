@@ -8,10 +8,90 @@ import category from '../../Data/Category'
 import UpNav from '../../Components/UpNav/UpNav';
 import testMap from '../../Map.png'
 import './publish.css'
+import nervos from '../../nervos'
+import { transaction, simpleStoreContract } from '../../simpleStore'
 
 
 class Publish extends Component{
+    // state = {
+    //     title: '',
+    //     contents: '',
+    //     category: '',
+    //     province: '',
+    //     district: '',
+    //     street: '',
+    //     time: new Date()
+    //     // submitText: submitTexts.normal,
+    //     // errorText: '',
+    // };
+
+
+    // handleInput = e => {
+    //     if(e.id === 'title'){
+    //         this.setState({ 'title' : e.value });
+    //     }
+    //     else if(e.id === 'address'){
+    //         this.setState({'province': "上海", 'district': "杨浦", 'street': "四平路"})
+    //     }
+    //     else if(e.id === 'contents'){
+    //         this.setState({'contents': '哇啊啊啊啊啊啊啊啊啊啊啊啊,ball ball you. Please work!!!!!'})
+    //     }
+    // };
+
+    handleSubmit = () => {
+        // const {title, contents, category, province, district, street, time} = this.state;
+        // const { getFieldProps } = this.props.form;
+        // // TODO: const address = getFieldProps('note2')['value'];
+        // const title = getFieldProps('note4')['value'];
+        // const contents = getFieldProps('note6')['value'];
+        // const category = "吃";
+        // const province = '上海';
+        // const district = '杨浦';
+        // const street = '四平路';
+        // alert(title + contents + new Date() + category + province + district + street);
+
+        const { getFieldProps } = this.props.form;
+        const title = getFieldProps('note4')['value'];
+        const contents = getFieldProps('note6')['value'];
+        const category = "吃";
+        const province = '上海';
+        const district = '杨浦';
+        const street = '四平路';
+        const time = new Date();
+        nervos.appchain
+            .getBlockNumber()
+            .then(current => {
+                const tx = {
+                    ...transaction,
+                    from:window.neuron.getAccount(),
+                    validUntilBlock: +current + 88,
+                };
+                // this.setState({
+                //     submitText: submitTexts.submitting,
+                // });
+                console.log("add account" + window.neuron.getAccount())
+                var that = this;
+                simpleStoreContract.methods.addACommentFromMe(title ,contents, category, province, district, street,
+                    +time).send(tx, function(err, res) {
+                    if (res) {
+                        nervos.listeners.listenToTransactionReceipt(res)
+                            .then(receipt => {
+                                if (!receipt.errorMessage) {
+                                    // that.setState({ submitText: submitTexts.submitted })
+                                    alert("hello");
+                                } else {
+                                    throw new Error(receipt.errorMessage)
+                                }
+                            })
+                    } else {
+                        // that.setState({ submitText: submitTexts.normal })
+                    }
+                })
+            })
+    };
+
     render(){
+        // const {title, contents, category, province, district, street, time} = this.state;
         const { getFieldProps } = this.props.form;
         return(
             <Route>
@@ -30,9 +110,12 @@ class Publish extends Component{
                             <img id='map' src={testMap} alt="map"/>
                             </div>
                             <TextareaItem
+                                // id = "address"
                                 {...getFieldProps('note2')}
                                 rows={1}
                                 placeholder="请输入地址"
+                                // value = {time}
+                                // onChange={this.handleInput}
                             />
                         </List>
 
@@ -47,6 +130,9 @@ class Publish extends Component{
                                 {...getFieldProps('note4')}
                                 rows={1}
                                 placeholder="请输入标题"
+                                // id = "title"
+                                // value = {title}
+                                // onChange={this.handleInput}
                             />
                         </List>
 
@@ -59,14 +145,17 @@ class Publish extends Component{
                             />
                             <TextareaItem
                                 {...getFieldProps('note6')}
+                                // id = 'contents'
                                 rows={5}
+                                // value = {contents}
+                                // onChange={this.handleInput}
                                 placeholder="请输入评论内容"
                             />
                         </List>
 
                         <WingBlank size="lg">
                             <WhiteSpace size="lg" />
-                            <Button type="primary">发布评论</Button><WhiteSpace />
+                            <Button type="primary" onClick={this.handleSubmit}>发布评论</Button><WhiteSpace />
                         </WingBlank>
                     </p>
                 </div>
