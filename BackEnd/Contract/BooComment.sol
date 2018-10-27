@@ -110,4 +110,18 @@ contract BooComment {
         return followListOfAUser[msg.sender];
     }
 
+    function getFollowListForAComment(address userAddressOfAComment, uint256 timeOfAComment) public returns (address[], uint256[]) {
+        Follow[] storage flwList = followList[userAddressOfAComment][timeOfAComment];
+        address[] storage adrList;
+        uint256[] storage timeList;
+        for (uint256 i = 0; i < flwList.length; ++i){
+           adrList.push(flwList[i].follower);
+           timeList.push(flwList[i].time);
+        }
+        return (adrList, timeList);
+    }
+
+    function getAFollowWithAddressAndTime(address addr, uint256 time) public view returns(string) {
+        return followRecord[addr][time].contents;
+    }
 }
