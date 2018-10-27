@@ -42,10 +42,19 @@ contract BooComment {
         return usercontents[msg.sender];
     }
 
+    function getUserCommentWithAddrAndTime(address user, uint256 time) private view
+    returns (string title, string contents, string category, string province, string district, string street){
+        Comment storage com = records[user][time];
+        title = com.title;
+        contents = com.contents;
+        category = com.category;
+        province = com.shop.province;
+        district = com.shop.district;
+        street = com.shop.street;
+    }
+
     function addACommentFromMe(string title, string contents, string category, string province, string district, string street, uint256 time) public {
-        records[msg.sender][time] =
-        // Comment memory tmp = 
-        Comment({
+        records[msg.sender][time] = Comment({
             client: msg.sender,
             time: time,
             title: title,
@@ -57,16 +66,6 @@ contract BooComment {
                 street: street
             })
         });
-        // com.client = msg.sender;
-        // com.time = time;
-        // com.title = title;
-        // com.contents = contents;
-        // com.category = category;
-        // com.shop.province = province;
-        // com.shop.district = district;
-        // com.shop.street = street;
-        
-        //com = tmp;
         _addAUserContentRecord(msg.sender, time);
         emit Recorded(msg.sender, title, contents, category, province, district, street, time);
     }
@@ -79,6 +78,36 @@ contract BooComment {
         province = com.shop.province;
         district = com.shop.district;
         street = com.shop.street;
+    }
+    
+    struct Follow {
+        address follower;
+        Comment comment;
+        uint256 time;
+        string contents;
+    }
+    
+    mapping ( address => mapping ( uint256 => Follow ) ) private followRecord;
+    mapping ( address => uint256[] ) private followListOfAUser;
+    mapping ( address => mapping ( uint256 => Follow[] )) private followList;
+
+    function getFollowsFromThisUser() public view returns(uint256[]) {
+        return followListOfAUser[msg.sender];
+    }
+
+    function addAFollowFromMe(address userAddressOfTheComment, uint256 timeOfTheComment, uint256 time, string contents) public {
+        followRecord[msg.sender][time] = Follow({
+            follower: msg.sender,
+            comment: records[userAddressOfTheComment][timeOfTheComment],
+            time: time,
+            contents: contents
+        });
+        followListOfAUser[msg.sender].push(time);
+        followList[userAddressOfTheComment][timeOfTheComment].push(followRecord[msg.sender][time]);
+    }
+
+    function getAFollowOfMine() public view returns(uint256[]) {
+        return followListOfAUser[msg.sender];
     }
 
 }
