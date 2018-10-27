@@ -43,27 +43,28 @@ contract BooComment {
     }
 
     function addACommentFromMe(string title, string contents, string category, string province, string district, string street, uint256 time) public {
-        Comment storage com = records[msg.sender][time];
-        // Comment memory tmp = Comment({
-        //     client: msg.sender,
-        //     time: time,
-        //     title: title,
-        //     contents: contents,
-        //     category: category,
-        //     shop: Shop({
-        //         province: province,
-        //         district: district,
-        //         street: street
-        //     })
-        // });
-        com.client = msg.sender;
-        com.time = time;
-        com.title = title;
-        com.contents = contents;
-        com.category = category;
-        com.shop.province = province;
-        com.shop.district = district;
-        com.shop.street = street;
+        records[msg.sender][time] =
+        // Comment memory tmp = 
+        Comment({
+            client: msg.sender,
+            time: time,
+            title: title,
+            contents: contents,
+            category: category,
+            shop: Shop({
+                province: province,
+                district: district,
+                street: street
+            })
+        });
+        // com.client = msg.sender;
+        // com.time = time;
+        // com.title = title;
+        // com.contents = contents;
+        // com.category = category;
+        // com.shop.province = province;
+        // com.shop.district = district;
+        // com.shop.street = street;
         
         //com = tmp;
         _addAUserContentRecord(msg.sender, time);
