@@ -13,6 +13,15 @@ import { transaction, simpleStoreContract } from '../../simpleStore'
 
 
 class Publish extends Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            pictureOnClick: false,
+            text: ''
+        };
+    }
+
+
     // state = {
     //     title: '',
     //     contents: '',
@@ -102,18 +111,20 @@ class Publish extends Component{
 
                             <TextareaItem
                                 {...getFieldProps('note1')}
+                                editable={false}
                                 title="地址"
                                 autoHeight
                                 labelNumber={2}
                             />
                             <div id='mapImage'>
-                            <img id='map' src={testMap} alt="map"/>
+                            <img id='map' src={testMap} alt="map" onClick={()=>{this.setState({pictureOnClick: true, text:'上海杨浦四平路'})}}/>
                             </div>
                             <TextareaItem
                                 // id = "address"
                                 {...getFieldProps('note2')}
                                 rows={1}
                                 placeholder="请输入地址"
+                                value={this.state.text}
                                 // value = {time}
                                 // onChange={this.handleInput}
                             />
@@ -122,6 +133,7 @@ class Publish extends Component{
                         <List renderHeader={() => ''}>
                             <TextareaItem
                                 {...getFieldProps('note3')}
+                                editable={false}
                                 title="标题"
                                 autoHeight
                                 labelNumber={2}
@@ -139,6 +151,7 @@ class Publish extends Component{
                         <List renderHeader={() => ''}>
                             <TextareaItem
                                 {...getFieldProps('note5')}
+                                editable={false}
                                 title="评论内容"
                                 autoHeight
                                 labelNumber={2}
