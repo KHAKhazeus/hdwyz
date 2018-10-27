@@ -67,6 +67,7 @@ contract BooComment {
             })
         });
         _addAUserContentRecord(msg.sender, time);
+        storedComments.push(records[msg.sender][time]);
         emit Recorded(msg.sender, title, contents, category, province, district, street, time);
     }
     
@@ -123,5 +124,23 @@ contract BooComment {
 
     function getAFollowWithAddressAndTime(address addr, uint256 time) public view returns(string) {
         return followRecord[addr][time].contents;
+    }
+    
+    Comment[] storedComments;
+    
+    function getAllComments() public returns(address[], uint256[]) {
+        address[] storage adrL;
+        uint256[] storage tL;
+        for (uint256 i = 0; i < storedComments.length; ++i) {
+            adrL.push(storedComments[i].client);
+            tL.push(storedComments[i].time);
+        }
+        return (adrL, tL);
+    }
+    
+    function getACommentWithAddressAndTime(address userAddressOfTheComment, uint256 timeOfTheComment) public
+    returns(string title, string contents, string category, string province, string district, string street, uint256 time) {
+        Comment storage com = records[userAddressOfTheComment][timeOfTheComment];
+        return _unpackAComment(com);
     }
 }
