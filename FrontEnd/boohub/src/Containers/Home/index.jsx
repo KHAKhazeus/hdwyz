@@ -18,9 +18,11 @@ function Home() {
                 </Link>
             </div>
             <div align="center">
+                <Link to="/view">
                 <Button type="primary" id="ViewPageButton" size="large">
                     查看评论
                 </Button>
+                </Link>
             </div>
         </div>
     );
