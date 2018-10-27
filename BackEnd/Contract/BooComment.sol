@@ -1,49 +1,83 @@
-pragma solidity 0.5.0.0
+pragma solidity ^0.4.25.0;
+//pragma experimental ABIEncoderV2;
 
 contract BooComment {
-    struct Comment{
-        //address client;
-        //uint256 time;
+    struct Comment {
+        address client;
+        uint256 time;
         string title;
-        string contians;
-        enum Category {milktea,fastfood,clothes,sevenEleven,supermarket}
-        Category public category;
-        enum Province {SH,BJ,NYC}
-        Province public province;
-        enum Ditrict {YP,CY,MHT}
-        Ditrict public ditrict;
-        enum Street {SP,CSK,TS}
-        Street public street;
+        string contents;
+        string category;
+        Shop shop;
+    }
+    
+    struct Shop {
+        string province;
+        string district;
+        string street;
     }
 
-    mapping (address => mapping (uint256 => struct Comment)) private records;
-    mapping (address => uint256[]) private categories;
+    mapping (address => mapping (uint256 => Comment)) private records;
+    mapping (address => uint256[]) private usercontents;
 
-    event Recorded(address _sender, 
-        string indexed _title,string indexed _contains,int32 indexed _category,
-        int32 indexed _province,int32 indexed _ditrict,int32 indexed _street,
-        uint256 indexed _time);
+    event Recorded(address indexed _sender, string _title, string _contents, string indexed _category, 
+        string _province, string district, string _street, uint256 indexed _time);
 
-    function _addToList(address from, uint256 time) private {
-        categories[from].push(time);
+    function _addAUserContentRecord(address from, uint256 time) private {
+        usercontents[from].push(time);
     }
 
-    function getList()
-    public
-    view
-    returns (uint256[])
-    {
-        return categories[msg.sender];
+    function _unpackAComment(Comment com) private pure
+    returns(string title, string contents, string category, string province, string district, string street, uint256 time) {
+        title = com.title;
+        contents = com.contents;
+        category = com.category;
+        province = com.shop.province;
+        district = com.shop.district;
+        street = com.shop.street;
+        time = com.time;
     }
 
-     function add(struct Comment texts, uint256 time) public {
-        records[msg.sender][time]=texts;
-        _addToList(msg.sender, time);
-        emit Recorded(msg.sender, texts, time);
+    function getUserContentsForThisUser() public view returns (uint256[]) {
+        return usercontents[msg.sender];
     }
-    function get(uint256 time) public view returns(struct Comment) {
+
+    function addACommentFromMe(string title, string contents, string category, string province, string district, string street, uint256 time) public {
+        Comment storage com = records[msg.sender][time];
+        // Comment memory tmp = Comment({
+        //     client: msg.sender,
+        //     time: time,
+        //     title: title,
+        //     contents: contents,
+        //     category: category,
+        //     shop: Shop({
+        //         province: province,
+        //         district: district,
+        //         street: street
+        //     })
+        // });
+        com.client = msg.sender;
+        com.time = time;
+        com.title = title;
+        com.contents = contents;
+        com.category = category;
+        com.shop.province = province;
+        com.shop.district = district;
+        com.shop.street = street;
         
-        return records[msg.sender][time];
+        //com = tmp;
+        _addAUserContentRecord(msg.sender, time);
+        emit Recorded(msg.sender, title, contents, category, province, district, street, time);
+    }
+    
+    function getACommentOfMine(uint256 time) public view returns(string title, string contents, string category, string province, string district, string street) {
+        Comment storage com = records[msg.sender][time];
+        title = com.title;
+        contents = com.contents;
+        category = com.category;
+        province = com.shop.province;
+        district = com.shop.district;
+        street = com.shop.street;
     }
 
 }
